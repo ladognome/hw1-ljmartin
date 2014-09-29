@@ -4,6 +4,14 @@
             <descriptor>
                 <import location="collectionReaderDescriptor.xml"/>
             </descriptor>
+            <configurationParameterSettings>
+                <nameValuePair>
+                    <name>inputFile</name>
+                    <value>
+                        <string>src/main/resources/data/sample.in</string>
+                    </value>
+                </nameValuePair>
+            </configurationParameterSettings>
         </collectionIterator>
     </collectionReader>
     <casProcessors casPoolSize="2" processingUnitThreadCount="1">

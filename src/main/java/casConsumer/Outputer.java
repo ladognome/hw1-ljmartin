@@ -15,6 +15,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 
+import annotation.AnnotationObject;
+
 // Outputs annotations in <ID>|<start> <end>|<entity> form
 // Prints to file
 // Used org.apache.uima.examples.cpe.AnnotationPrinter as template
@@ -74,28 +76,17 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
     }
 
     // iterate and print annotations
-    Iterator annotationIter = jcas.getAnnotationIndex().iterator();
+    Iterator annotationIter = jcas.getAnnotationIndex(AnnotationObject.type).iterator();
     while (annotationIter.hasNext()) {
-      Annotation annot = (Annotation) annotationIter.next();
+      AnnotationObject annot = (AnnotationObject) annotationIter.next();
       if (titleP == false) {
         try {
           if (docUri != null)
-            fileWriter.write(docUri + "|" + annot.getBegin() + " " + annot.getEnd() + "|"+ annot.getCoveredText()+"\n");
+            fileWriter.write(docUri + "|" + annot.getBegin() + " " + annot.getEnd() + "|"+ annot.getGeneName()+"\n");
         } catch (IOException e) {
           throw new ResourceProcessException(e);
         }
         titleP = true;
-      }
-      // get the text that is enclosed within the annotation in the CAS
-      String aText = annot.getCoveredText();
-      aText = aText.replace('\n', ' ');
-      aText = aText.replace('\r', ' ');
-      // System.out.println( annot.getType().getName() + " "+aText);
-      try {
-        fileWriter.write(annot.getType().getName() + " " + aText + "\n");
-        fileWriter.flush();
-      } catch (IOException e) {
-        throw new ResourceProcessException(e);
       }
     }
 
