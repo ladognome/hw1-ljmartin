@@ -7,7 +7,7 @@
     <vendor/>
   <types>
     <typeDescription>
-      <name>annotation.AnnotationObject</name>
+      <name>objects.AnnotationObject</name>
       <description/>
       <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>

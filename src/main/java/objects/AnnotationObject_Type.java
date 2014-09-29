@@ -1,6 +1,6 @@
+package objects;
 
-/* First created by JCasGen Mon Sep 29 12:46:06 EDT 2014 */
-package annotation;
+/* First created by JCasGen Sun Sep 28 20:45:07 EDT 2014 */
 
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.JCasRegistry;
@@ -14,7 +14,7 @@ import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation_Type;
 
 /** 
- * Updated by JCasGen Mon Sep 29 12:46:06 EDT 2014
+ * Updated by JCasGen Mon Sep 29 12:54:42 EDT 2014
  * @generated */
 public class AnnotationObject_Type extends Annotation_Type {
   /** @generated 
@@ -44,7 +44,7 @@ public class AnnotationObject_Type extends Annotation_Type {
   /** @generated 
      @modifiable */
   @SuppressWarnings ("hiding")
-  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("annotation.AnnotationObject");
+  public final static boolean featOkTst = JCasRegistry.getFeatOkTst("objects.AnnotationObject");
  
   /** @generated */
   final Feature casFeat_geneName;
@@ -56,7 +56,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */ 
   public String getGeneName(int addr) {
         if (featOkTst && casFeat_geneName == null)
-      jcas.throwFeatMissing("geneName", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("geneName", "objects.AnnotationObject");
     return ll_cas.ll_getStringValue(addr, casFeatCode_geneName);
   }
   /** @generated
@@ -65,7 +65,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */    
   public void setGeneName(int addr, String v) {
         if (featOkTst && casFeat_geneName == null)
-      jcas.throwFeatMissing("geneName", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("geneName", "objects.AnnotationObject");
     ll_cas.ll_setStringValue(addr, casFeatCode_geneName, v);}
     
   
@@ -80,7 +80,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */ 
   public int getStart(int addr) {
         if (featOkTst && casFeat_start == null)
-      jcas.throwFeatMissing("start", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("start", "objects.AnnotationObject");
     return ll_cas.ll_getIntValue(addr, casFeatCode_start);
   }
   /** @generated
@@ -89,7 +89,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */    
   public void setStart(int addr, int v) {
         if (featOkTst && casFeat_start == null)
-      jcas.throwFeatMissing("start", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("start", "objects.AnnotationObject");
     ll_cas.ll_setIntValue(addr, casFeatCode_start, v);}
     
   
@@ -104,7 +104,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */ 
   public int getEnd(int addr) {
         if (featOkTst && casFeat_end == null)
-      jcas.throwFeatMissing("end", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("end", "objects.AnnotationObject");
     return ll_cas.ll_getIntValue(addr, casFeatCode_end);
   }
   /** @generated
@@ -113,7 +113,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */    
   public void setEnd(int addr, int v) {
         if (featOkTst && casFeat_end == null)
-      jcas.throwFeatMissing("end", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("end", "objects.AnnotationObject");
     ll_cas.ll_setIntValue(addr, casFeatCode_end, v);}
     
   
@@ -128,7 +128,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */ 
   public String getID(int addr) {
         if (featOkTst && casFeat_ID == null)
-      jcas.throwFeatMissing("ID", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("ID", "objects.AnnotationObject");
     return ll_cas.ll_getStringValue(addr, casFeatCode_ID);
   }
   /** @generated
@@ -137,7 +137,7 @@ public class AnnotationObject_Type extends Annotation_Type {
    */    
   public void setID(int addr, String v) {
         if (featOkTst && casFeat_ID == null)
-      jcas.throwFeatMissing("ID", "annotation.AnnotationObject");
+      jcas.throwFeatMissing("ID", "objects.AnnotationObject");
     ll_cas.ll_setStringValue(addr, casFeatCode_ID, v);}
     
   

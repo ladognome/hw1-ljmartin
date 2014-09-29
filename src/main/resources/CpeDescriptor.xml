@@ -2,7 +2,7 @@
     <collectionReader>
         <collectionIterator>
             <descriptor>
-                <import location="collectionReaderDescriptor.xml"/>
+                <import location="descriptors/collectionReaderDescriptor.xml"/>
             </descriptor>
             <configurationParameterSettings>
                 <nameValuePair>
@@ -17,7 +17,7 @@
     <casProcessors casPoolSize="2" processingUnitThreadCount="1">
         <casProcessor deployment="integrated" name="PosTagger">
             <descriptor>
-                <import location="ae-PosDescriptor.xml"/>
+                <import location="descriptors/ae-PosDescriptor.xml"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -29,7 +29,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="Outputer">
             <descriptor>
-                <import location="casConsumerDescriptor.xml"/>
+                <import location="descriptors/casConsumerDescriptor.xml"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -43,6 +43,12 @@
                     <name>outputFile</name>
                     <value>
                         <string>src/main/resources/data/prediction.out</string>
+                    </value>
+                </nameValuePair>
+                <nameValuePair>
+                    <name>goldStandard</name>
+                    <value>
+                        <string>src/main/resources/data/sample.out</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>

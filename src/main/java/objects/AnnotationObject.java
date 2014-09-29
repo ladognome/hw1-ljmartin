@@ -1,18 +1,17 @@
+package objects;
 
 
-/* First created by JCasGen Mon Sep 29 12:46:06 EDT 2014 */
-package annotation;
+/* First created by JCasGen Sun Sep 28 20:45:07 EDT 2014 */
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
-
 import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Sep 29 12:46:06 EDT 2014
- * XML source: /home/lara/workspace/hw1-ljmartin/src/main/resources/descriptors/ae-PosDescriptor.xml
+ * Updated by JCasGen Mon Sep 29 12:54:42 EDT 2014
+ * XML source: /home/lara/workspace/hw1-ljmartin/src/main/resources/descriptors/typeSystemDescriptor.xml
  * @generated */
 public class AnnotationObject extends Annotation {
   /** @generated
@@ -85,7 +84,7 @@ public class AnnotationObject extends Annotation {
    */
   public String getGeneName() {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_geneName == null)
-      jcasType.jcas.throwFeatMissing("geneName", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("geneName", "objects.AnnotationObject");
     return jcasType.ll_cas.ll_getStringValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_geneName);}
     
   /** setter for geneName - sets  
@@ -94,7 +93,7 @@ public class AnnotationObject extends Annotation {
    */
   public void setGeneName(String v) {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_geneName == null)
-      jcasType.jcas.throwFeatMissing("geneName", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("geneName", "objects.AnnotationObject");
     jcasType.ll_cas.ll_setStringValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_geneName, v);}    
    
     
@@ -107,7 +106,7 @@ public class AnnotationObject extends Annotation {
    */
   public int getStart() {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_start == null)
-      jcasType.jcas.throwFeatMissing("start", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("start", "objects.AnnotationObject");
     return jcasType.ll_cas.ll_getIntValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_start);}
     
   /** setter for start - sets  
@@ -116,7 +115,7 @@ public class AnnotationObject extends Annotation {
    */
   public void setStart(int v) {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_start == null)
-      jcasType.jcas.throwFeatMissing("start", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("start", "objects.AnnotationObject");
     jcasType.ll_cas.ll_setIntValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_start, v);}    
    
     
@@ -129,7 +128,7 @@ public class AnnotationObject extends Annotation {
    */
   public int getEnd() {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_end == null)
-      jcasType.jcas.throwFeatMissing("end", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("end", "objects.AnnotationObject");
     return jcasType.ll_cas.ll_getIntValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_end);}
     
   /** setter for end - sets  
@@ -138,7 +137,7 @@ public class AnnotationObject extends Annotation {
    */
   public void setEnd(int v) {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_end == null)
-      jcasType.jcas.throwFeatMissing("end", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("end", "objects.AnnotationObject");
     jcasType.ll_cas.ll_setIntValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_end, v);}    
    
     
@@ -151,7 +150,7 @@ public class AnnotationObject extends Annotation {
    */
   public String getID() {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_ID == null)
-      jcasType.jcas.throwFeatMissing("ID", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("ID", "objects.AnnotationObject");
     return jcasType.ll_cas.ll_getStringValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_ID);}
     
   /** setter for ID - sets  
@@ -160,7 +159,7 @@ public class AnnotationObject extends Annotation {
    */
   public void setID(String v) {
     if (AnnotationObject_Type.featOkTst && ((AnnotationObject_Type)jcasType).casFeat_ID == null)
-      jcasType.jcas.throwFeatMissing("ID", "annotation.AnnotationObject");
+      jcasType.jcas.throwFeatMissing("ID", "objects.AnnotationObject");
     jcasType.ll_cas.ll_setStringValue(addr, ((AnnotationObject_Type)jcasType).casFeatCode_ID, v);}    
   }
 

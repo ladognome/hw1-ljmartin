@@ -1,9 +1,17 @@
 package casConsumer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Scanner;
+
+import objects.AnnotationObject;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -15,8 +23,6 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 
-import annotation.AnnotationObject;
-
 // Outputs annotations in <ID>|<start> <end>|<entity> form
 // Prints to file
 // Used org.apache.uima.examples.cpe.AnnotationPrinter as template
@@ -25,8 +31,10 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
   File outFile;
 
   FileWriter fileWriter;
-  
-  //private String outputFile = "src/main/java/data/hypothesis.out";
+
+  private String gold;
+
+  private ArrayList<String> predictions = new ArrayList<String>();
 
   public Outputer() {
   }
@@ -35,12 +43,15 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
 
     // extract configuration parameter settings
     String oPath = (String) getUimaContext().getConfigParameterValue("outputFile");
+    // find goldStandard file, if it is given
+    gold = (String) getUimaContext().getConfigParameterValue("goldStandard");
 
     // Output file should be specified in the descriptor
     if (oPath == null) {
       throw new ResourceInitializationException(
               ResourceInitializationException.CONFIG_SETTING_ABSENT, new Object[] { "outputFile" });
     }
+
     // If specified output directory does not exist, try to create it
     outFile = new File(oPath.trim());
     if (outFile.getParentFile() != null && !outFile.getParentFile().exists()) {
@@ -55,9 +66,7 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
       throw new ResourceInitializationException(e);
     }
   }
-  
-  
-  
+
   @Override
   public void processCas(CAS aCAS) throws ResourceProcessException {
     JCas jcas;
@@ -79,10 +88,15 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
     Iterator annotationIter = jcas.getAnnotationIndex(AnnotationObject.type).iterator();
     while (annotationIter.hasNext()) {
       AnnotationObject annot = (AnnotationObject) annotationIter.next();
+      String outString = "";
       if (titleP == false) {
         try {
           if (docUri != null)
-            fileWriter.write(docUri + "|" + annot.getBegin() + " " + annot.getEnd() + "|"+ annot.getGeneName()+"\n");
+            outString = docUri + "|" + annot.getBegin() + " " + annot.getEnd() + "|"
+                    + annot.getGeneName();
+          fileWriter.write(outString + "\n");
+          predictions.add(outString);
+
         } catch (IOException e) {
           throw new ResourceProcessException(e);
         }
@@ -91,9 +105,17 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
     }
 
   }
-  
-  
+
+  @Override
   public void destroy() {
+    if (gold != null) {
+      try {
+        checkAccuracy(predictions, gold);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
     if (fileWriter != null) {
       try {
         fileWriter.close();
@@ -101,6 +123,33 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
         // ignore IOException on destroy
       }
     }
+  }
+
+  private void checkAccuracy(ArrayList<String> prediction, String goldStandard) throws IOException {
+
+    BufferedReader br = new BufferedReader(new FileReader(goldStandard));
+    ArrayList<String> gold = new ArrayList<String>();
+    String line;
+    while ((line = br.readLine()) != null) {
+      gold.add(line.trim());
+    }
+    br.close();
+
+    int relevant = gold.size();
+    int retrieved = prediction.size();
+    int relRet = 0;
+
+    for (String s : prediction) {
+      if (gold.contains(s)) {
+        relRet++;
+      }
+    }
+
+    double precision = relRet / retrieved;
+    double recall = relRet / relevant;
+    System.out.println("Precision: " + relRet + "/" + retrieved + "\nRecall: " + relRet + "/"
+            + relevant);
+
   }
 
 }

@@ -38,12 +38,12 @@ public class Inputer extends CollectionReader_ImplBase {
     String iPath = (String) getUimaContext().getConfigParameterValue("inputFile");
 
     // If the parameter is not set, read from default file
-    if (iPath == null) {      
+    if (iPath == null) {
       iPath = PARAM_INPUTFILE;
     }
     // If specified output directory does not exist, try to create it
     inFile = new File(iPath.trim());
-    
+
     // open input stream to file
     try {
       reader = new BufferedReader(new FileReader(inFile));
