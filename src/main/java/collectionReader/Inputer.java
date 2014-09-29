@@ -1,10 +1,8 @@
 package collectionReader;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.io.File;
 
 import org.apache.uima.cas.CAS;
@@ -15,13 +13,10 @@ import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
-import org.apache.uima.util.ProgressImpl;
 
 // Given input file, opens and reads
-// File should have <ID> <text> format
-// Separates them into individual attributes
+// Each line is its own CAS
 // Using org.apache.uima.examples.cpe.FileSystemCollectionReader as template
 public class Inputer extends CollectionReader_ImplBase {
   public static final String PARAM_INPUTFILE = "src/main/resources/data/sample.in";
@@ -31,18 +26,12 @@ public class Inputer extends CollectionReader_ImplBase {
   // input file
   private File inFile;
 
-  private String mEncoding;
-
-  private int mCurrentIndex;
-
   private String currLine = "";
-  
+
   private BufferedReader reader;
 
   public void initialize() throws ResourceInitializationException {
     File curr_file = new File(((String) getConfigParameterValue(PARAM_INPUTFILE)).trim());
-    mEncoding = (String) getConfigParameterValue(PARAM_ENCODING);
-    mCurrentIndex = 0;
     // if input file does not exist or is not a file, throw exception
     if (!curr_file.exists() || !curr_file.isFile()) {
       throw new ResourceInitializationException(ResourceConfigurationException.DIRECTORY_NOT_FOUND,
@@ -67,19 +56,28 @@ public class Inputer extends CollectionReader_ImplBase {
       currLine = reader.readLine();
     }
     // put document in CAS
-    jcas.setDocumentText(currLine);
+    int firstSpace = currLine.indexOf(' ');
+    String id = currLine.substring(0,firstSpace);
+    String text = currLine.substring(firstSpace+1);
+    jcas.setDocumentText(text);
+    SourceDocumentInformation srcDocInfo = new SourceDocumentInformation(jcas);
+    srcDocInfo.setUri(id);
+    srcDocInfo.setOffsetInSource(0);
+    srcDocInfo.setDocumentSize(text.length());
+    srcDocInfo.addToIndexes();
+    
     // go to next line
     currLine = reader.readLine();
   }
 
   @Override
   public void close() throws IOException {
-      reader.close();
+    reader.close();
   }
 
   @Override
   public Progress[] getProgress() {
-    //return new Progress[] { new ProgressImpl(mCurrentIndex, mFiles.size(), Progress.ENTITIES) };
+    // return new Progress[] { new ProgressImpl(mCurrentIndex, mFiles.size(), Progress.ENTITIES) };
     return null;
   }
 
