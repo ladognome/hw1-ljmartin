@@ -1,7 +1,9 @@
 package collectionReader;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 
@@ -31,14 +33,25 @@ public class Inputer extends CollectionReader_ImplBase {
   private BufferedReader reader;
 
   public void initialize() throws ResourceInitializationException {
-    File curr_file = new File(((String) getConfigParameterValue(PARAM_INPUTFILE)).trim());
-    // if input file does not exist or is not a file, throw exception
-    if (!curr_file.exists() || !curr_file.isFile()) {
-      throw new ResourceInitializationException(ResourceConfigurationException.DIRECTORY_NOT_FOUND,
-              new Object[] { PARAM_INPUTFILE, this.getMetaData().getName(), curr_file.getPath() });
+
+    // extract configuration parameter settings
+    String iPath = (String) getUimaContext().getConfigParameterValue("inputFile");
+
+    // If the parameter is not set, read from default file
+    if (iPath == null) {      
+      iPath = PARAM_INPUTFILE;
     }
-    // if it's found, add it as our input file
-    inFile = curr_file;
+    // If specified output directory does not exist, try to create it
+    inFile = new File(iPath.trim());
+    
+    // open input stream to file
+    try {
+      reader = new BufferedReader(new FileReader(inFile));
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
   }
 
   @Override
@@ -50,22 +63,20 @@ public class Inputer extends CollectionReader_ImplBase {
       throw new CollectionException(e);
     }
 
-    // open input stream to file
-    reader = new BufferedReader(new FileReader(inFile));
     if (currLine == "") {
       currLine = reader.readLine();
     }
     // put document in CAS
     int firstSpace = currLine.indexOf(' ');
-    String id = currLine.substring(0,firstSpace);
-    String text = currLine.substring(firstSpace+1);
+    String id = currLine.substring(0, firstSpace);
+    String text = currLine.substring(firstSpace + 1);
     jcas.setDocumentText(text);
     SourceDocumentInformation srcDocInfo = new SourceDocumentInformation(jcas);
     srcDocInfo.setUri(id);
     srcDocInfo.setOffsetInSource(0);
     srcDocInfo.setDocumentSize(text.length());
     srcDocInfo.addToIndexes();
-    
+
     // go to next line
     currLine = reader.readLine();
   }

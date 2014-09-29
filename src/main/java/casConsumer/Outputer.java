@@ -24,7 +24,7 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
 
   FileWriter fileWriter;
   
-  private String outputFile = "src/main/java/data/hypothesis.out";
+  //private String outputFile = "src/main/java/data/hypothesis.out";
 
   public Outputer() {
   }
