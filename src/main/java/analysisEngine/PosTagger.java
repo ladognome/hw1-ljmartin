@@ -1,5 +1,9 @@
 package analysisEngine;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import objects.AnnotationObject;
@@ -13,20 +17,34 @@ import org.apache.uima.resource.ResourceInitializationException;
 import util.PosTagNamedEntityRecognizer;
 
 /*
- * Wrapper to call PosTagNamedEntityRecognizer
+ * Wrapper to call PosTagNamedEntityRecognizer; gets nouns and adjectives
  * Gets word from text, given the positions
  * Removes whitespaces in positions
- * Updates CAS with annotation
+ * Updates CAS with annotation, except for words found in list of most common English words
  * Used org.apache.uima.examples.cas.RegExAnnotator as template
+ * 
+ * List of most common words is from:
+ * http://www.wordfrequency.info/free.asp
  */
 
 public class PosTagger extends JCasAnnotator_ImplBase {
 
   private PosTagNamedEntityRecognizer pt;
 
+  private String commonWords = "src/main/resources/data/commonWords.txt";
+
+  private ArrayList<String> common;
+
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     pt = new PosTagNamedEntityRecognizer();
+    
+    //list of most common words in English
+    try {
+      common = readFile(commonWords);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -63,7 +81,7 @@ public class PosTagger extends JCasAnnotator_ImplBase {
   }
 
   /**
-   * Adding annotations to CAS from a map of positions
+   * Adding annotations to CAS from a map of positions, eliminating common words
    *
    * @param m
    *          a map with starting positions(int) for keys and end positions(int) as values
@@ -79,17 +97,31 @@ public class PosTagger extends JCasAnnotator_ImplBase {
       int start = key;
       int end = m.get(key);
       String entity = doc.substring(start, end);
+      
+      //if it's not a common word in English, then it's probably not a gene name
+      if (!common.contains(entity)) {
+        // fixing indices to remove whitespace
+        int preEntitySpaceCount = countWhitespace(doc.substring(0, start));
+        int entitySpaceCount = countWhitespace(entity);
 
-      // fixing indices to remove whitespace
-      int preEntitySpaceCount = countWhitespace(doc.substring(0, start));
-      int entitySpaceCount = countWhitespace(entity);
-
-      // add annotation to the CAS
-      AnnotationObject ann = new AnnotationObject(aCAS);
-      ann.setBegin(start - preEntitySpaceCount);
-      ann.setEnd(end - preEntitySpaceCount - entitySpaceCount - 1);
-      ann.setGeneName(entity);
-      ann.addToIndexes();
+        // add annotation to the CAS
+        AnnotationObject ann = new AnnotationObject(aCAS);
+        ann.setBegin(start - preEntitySpaceCount);
+        ann.setEnd(end - preEntitySpaceCount - entitySpaceCount - 1);
+        ann.setGeneName(entity);
+        ann.addToIndexes();
+      }
     }
+  }
+
+  private ArrayList<String> readFile(String file) throws IOException {
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    ArrayList<String> list = new ArrayList<String>();
+    String line;
+    while ((line = br.readLine()) != null) {
+      list.add(line.trim());
+    }
+    br.close();
+    return list;
   }
 }
