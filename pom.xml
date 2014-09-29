@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.cmu.lti.11791.f14.hw1</groupId>
   <artifactId>hw1-ljmartin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <repositories>
     <repository>
       <id>oaqa</id>
@@ -105,4 +105,9 @@
       <version>1.3.2</version>
     </dependency>
   </dependencies>
+  <scm>
+  	<connection>scm:git:git@github.com:ladognome/hw1-ljmartin.git</connection>
+  	<developerConnection>scm:git:git@github.com:ladognome/hw1-ljmartin.git</developerConnection>
+  	<tag>hw1-ljmartin-0.0.1</tag>
+  </scm>
 </project>
