@@ -8,7 +8,7 @@
                 <nameValuePair>
                     <name>inputFile</name>
                     <value>
-                        <string>src/main/resources/data/sample.in</string>
+                        <string>hw1.in</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
