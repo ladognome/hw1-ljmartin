@@ -2,14 +2,11 @@ package casConsumer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Scanner;
 
 import objects.AnnotationObject;
 
@@ -19,13 +16,15 @@ import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.collection.base_cpm.CasObjectProcessor;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 
-// Outputs annotations in <ID>|<start> <end>|<entity> form
-// Prints to file
-// Used org.apache.uima.examples.cpe.AnnotationPrinter as template
+/* 
+ * Outputs annotations in <ID>|<start> <end>|<entity> form
+ * Prints to file specified from cpe xml(required)
+ * Can specify gold standard file to compare to in order to create precision and recall measures
+ * Used org.apache.uima.examples.cpe.AnnotationPrinter as template
+ */
 
 public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor {
   File outFile;
@@ -94,8 +93,10 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
           if (docUri != null)
             outString = docUri + "|" + annot.getBegin() + " " + annot.getEnd() + "|"
                     + annot.getGeneName();
-          fileWriter.write(outString + "\n");
-          predictions.add(outString);
+          if (!predictions.contains(outString)) {
+            fileWriter.write(outString + "\n");
+            predictions.add(outString);
+          }
 
         } catch (IOException e) {
           throw new ResourceProcessException(e);
@@ -125,6 +126,16 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
     }
   }
 
+  /**
+   * Prints (to System.out) precision and recall given a gold-standard and the predictions.
+   *
+   * @param prediction
+   *          an arrayList of strings that hold your predictions in the same format as the
+   *          goldStandard, split by line
+   * @param goldStandard
+   *          a string of the location where the goldStandard file can be found
+   * @return void
+   */
   private void checkAccuracy(ArrayList<String> prediction, String goldStandard) throws IOException {
 
     BufferedReader br = new BufferedReader(new FileReader(goldStandard));
@@ -145,10 +156,10 @@ public class Outputer extends CasConsumer_ImplBase implements CasObjectProcessor
       }
     }
 
-    double precision = relRet / retrieved;
-    double recall = relRet / relevant;
-    System.out.println("Precision: " + relRet + "/" + retrieved + "\nRecall: " + relRet + "/"
-            + relevant);
+    double precision = (double) relRet / (double) retrieved;
+    double recall = (double) relRet / (double) relevant;
+    System.out.println("Precision: " + relRet + "/" + retrieved + " = " + precision + "\nRecall: "
+            + relRet + "/" + relevant + " = " + recall);
 
   }
 

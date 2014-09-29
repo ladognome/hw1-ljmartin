@@ -10,8 +10,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Mon Sep 29 12:54:42 EDT 2014
- * XML source: /home/lara/workspace/hw1-ljmartin/src/main/resources/descriptors/typeSystemDescriptor.xml
+ * Updated by JCasGen Mon Sep 29 15:18:17 EDT 2014
+ * XML source: /home/lara/workspace/hw1-ljmartin/src/main/resources/descriptors/ae-Acronym.xml
  * @generated */
 public class AnnotationObject extends Annotation {
   /** @generated

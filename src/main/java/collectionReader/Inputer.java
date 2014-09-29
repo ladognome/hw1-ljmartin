@@ -3,7 +3,6 @@ package collectionReader;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 
@@ -13,13 +12,17 @@ import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.Progress;
 
-// Given input file, opens and reads
-// Each line is its own CAS
-// Using org.apache.uima.examples.cpe.FileSystemCollectionReader as template
+/* 
+ * Given input file, opens and reads it
+ * If input is not specified in cpe xml, uses PARAM_INPUTFILE default location
+ * Each line is its own CAS
+ * Separates line by <ID> <text>
+ * Used org.apache.uima.examples.cpe.FileSystemCollectionReader as template
+ */
+
 public class Inputer extends CollectionReader_ImplBase {
   public static final String PARAM_INPUTFILE = "src/main/resources/data/sample.in";
 
@@ -41,14 +44,11 @@ public class Inputer extends CollectionReader_ImplBase {
     if (iPath == null) {
       iPath = PARAM_INPUTFILE;
     }
-    // If specified output directory does not exist, try to create it
+    // Read the path and try to open the file
     inFile = new File(iPath.trim());
-
-    // open input stream to file
     try {
       reader = new BufferedReader(new FileReader(inFile));
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
@@ -63,13 +63,17 @@ public class Inputer extends CollectionReader_ImplBase {
       throw new CollectionException(e);
     }
 
+    // if we haven't already started, get a line for our first CAS
     if (currLine == "") {
       currLine = reader.readLine();
     }
-    // put document in CAS
+
+    // split text by <ID> <document text>
     int firstSpace = currLine.indexOf(' ');
     String id = currLine.substring(0, firstSpace);
     String text = currLine.substring(firstSpace + 1);
+
+    // add object to CAS
     jcas.setDocumentText(text);
     SourceDocumentInformation srcDocInfo = new SourceDocumentInformation(jcas);
     srcDocInfo.setUri(id);
@@ -77,7 +81,7 @@ public class Inputer extends CollectionReader_ImplBase {
     srcDocInfo.setDocumentSize(text.length());
     srcDocInfo.addToIndexes();
 
-    // go to next line
+    // go to next line in text
     currLine = reader.readLine();
   }
 
@@ -88,7 +92,6 @@ public class Inputer extends CollectionReader_ImplBase {
 
   @Override
   public Progress[] getProgress() {
-    // return new Progress[] { new ProgressImpl(mCurrentIndex, mFiles.size(), Progress.ENTITIES) };
     return null;
   }
 
