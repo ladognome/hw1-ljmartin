@@ -38,8 +38,8 @@ public class PosTagger extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     pt = new PosTagNamedEntityRecognizer();
-    
-    //list of most common words in English
+
+    // list of most common words in English
     try {
       common = readFile(commonWords);
     } catch (IOException e) {
@@ -97,8 +97,8 @@ public class PosTagger extends JCasAnnotator_ImplBase {
       int start = key;
       int end = m.get(key);
       String entity = doc.substring(start, end);
-      
-      //if it's not a common word in English, then it's probably not a gene name
+
+      // if it's not a common word in English, then it's probably not a gene name
       if (!common.contains(entity)) {
         // fixing indices to remove whitespace
         int preEntitySpaceCount = countWhitespace(doc.substring(0, start));
@@ -114,6 +114,13 @@ public class PosTagger extends JCasAnnotator_ImplBase {
     }
   }
 
+  /**
+   * Reads a file and puts each line into an ArrayList
+   *
+   * @param file
+   *          String path to be read
+   * @return ArrayList<String> of lines from the file
+   */
   private ArrayList<String> readFile(String file) throws IOException {
     BufferedReader br = new BufferedReader(new FileReader(file));
     ArrayList<String> list = new ArrayList<String>();
